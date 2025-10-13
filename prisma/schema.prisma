@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id        Int       @id @default(autoincrement())
+  text      String
+  order     Int       @unique // 1-10 for display order
+  options   Option[]
+  createdAt DateTime  @default(now())
+}
+
+model Option {
+  id         Int       @id @default(autoincrement())
+  text       String
+  emoji      String    // 🎆, 🪔, etc.
+  questionId Int
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  tags       String[]  // ["energetic", "social", "bold"]
+  order      Int
+}
+
+model Sweet {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  emoji       String
+  description String
+  tagline     String
+  funFact     String
+  imageUrl    String
+  tags        String[]  // personality tags
+  calories    Int
+  protein     Float
+  carbs       Float
+  fat         Float
+  fiber       Float
+  sugar       Float
+  createdAt   DateTime  @default(now())
+}
+
+model QuizResult {
+  id               Int      @id @default(autoincrement())
+  userName         String?
+  selectedOptions  Json     // Array of option IDs
+  tagScores        Json     // {"energetic": 5, "traditional": 2}
+  recommendedSweet String
+  createdAt        DateTime @default(now())
+}
