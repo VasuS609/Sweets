@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Question {
@@ -22,7 +22,7 @@ model Option {
   emoji      String    // 🎆, 🪔, etc.
   questionId Int
   question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  tags       String[]  // ["energetic", "social", "bold"]
+  tags       Json      // ["energetic", "social", "bold"]
   order      Int
 }
 
@@ -34,7 +34,7 @@ model Sweet {
   tagline     String
   funFact     String
   imageUrl    String
-  tags        String[]  // personality tags
+  tags        Json      // personality tags
   calories    Int
   protein     Float
   carbs       Float

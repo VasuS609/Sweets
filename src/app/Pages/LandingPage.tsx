@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Exo_2 } from "next/font/google";
-import { useRouter } from 'next/navigation';
 import AOS from 'aos';
+import 'aos/dist/aos.css';
 
+// Configure the font
 const exo2 = Exo_2({ 
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
   display: 'swap',
 })
 
-export default function Home() {
-  const router = useRouter()
-
+const LandingPage: React.FC = () => {
   useEffect(() => {
     AOS.init({
-      duration: 700,
+      duration: 1000,
       once: true,
     });
   }, []);
@@ -94,21 +93,16 @@ export default function Home() {
             </h3>
 
             {/* CTA Button */}
-           
             <button 
               className='bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold text-lg sm:text-xl px-12 py-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 mt-4'
               data-aos="zoom-in"
               data-aos-delay="800"
-              onClick={()=>{
-                router.push("/quiz");             
-              }}
             >
-              Let' Go 🎆
+              Get Started 🎆
             </button>
-          
           </div>
 
-          {/* Bottom section */}
+          {/* Bottom section - Optional footer */}
           <div 
             className='text-white text-md'
           >
@@ -119,3 +113,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default LandingPage

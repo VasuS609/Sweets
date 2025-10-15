@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 interface Option {
   text: string;
   emoji: string;
-  tags: string;
+  tags: string[];  // ✅ Fixed: Should be array
   order: number;
   id: number;
 }
@@ -24,11 +24,12 @@ interface Question {
 const QuizPage = () => {
   const router = useRouter();
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [answers, setAnswers] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [currentIndex, setCurrentIndex] = useState<number>(0); 
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     // Initialize AOS
@@ -43,13 +44,16 @@ const QuizPage = () => {
   const fetchQuestion = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/quiz");
+      const response = await fetch("/api/quiz",{
+        method: "GET",
+
+      });
 
       if (!response.ok) throw new Error("Error to fetch question");
 
       const data = await response.json();
 
-      if (!data.ok) throw new Error("Unauthenticated");
+      if (!data.success) throw new Error("Failed to fetch questions");
 
       setQuestions(data.questions);
       setLoading(false);
@@ -63,19 +67,58 @@ const QuizPage = () => {
     setSelectedOption(optionId);
   };
 
+  // ✅ NEW: Submit function
+  const submitQuiz = async (finalAnswers: number[]) => {
+    try {
+      setSubmitting(true);
+      console.log('📤 Submitting quiz with answers:', finalAnswers);
+      
+      const response = await fetch('/api/quiz/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selectedOptions: finalAnswers })
+      });
+      
+      console.log('📡 Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit quiz');
+      }
+      
+      const result = await response.json();
+      console.log('✅ Submit successful:', result);
+      console.log('🎯 Result ID:', result.id);
+      console.log('🎯 Navigating to /result/' + result.id);
+      
+      // Navigate to result page
+      router.push(`/result/${result.id}`);
+      
+    } catch (error) {
+      console.error('❌ Submit error:', error);
+      alert('Failed to submit quiz: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      setSubmitting(false);
+    }
+  };
+
+  // ✅ FIXED: handleNext function
   const handleNext = () => {
     if (selectedOption !== null) {
-      // Save the answer
-      setAnswers([...answers, selectedOption]);
+      const newAnswers = [...answers, selectedOption];
       
-      // Move to next question or submit
-      if (currentIndex < questions.length - 1) {
+      console.log('📊 Current answers:', newAnswers);
+      console.log('📊 Question', currentIndex + 1, 'of', questions.length);
+      
+      // Check if this is the last question
+      if (currentIndex === questions.length - 1) {
+        console.log('🎯 Last question! Submitting quiz...');
+        submitQuiz(newAnswers);
+      } else {
+        // Move to next question
+        console.log('➡️ Moving to next question');
+        setAnswers(newAnswers);
         setCurrentIndex(currentIndex + 1);
         setSelectedOption(null);
-      } else {
-        // Quiz completed - navigate to results or submit
-        console.log("Quiz completed with answers:", [...answers, selectedOption]);
-        // router.push('/results'); // Uncomment when you have a results page
       }
     }
   };
@@ -83,8 +126,10 @@ const QuizPage = () => {
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      // Optionally restore the previous answer
+      // Restore the previous answer
       setSelectedOption(answers[currentIndex - 1] || null);
+      // Remove the last answer from the array
+      setAnswers(answers.slice(0, -1));
     }
   };
 
@@ -115,9 +160,20 @@ const QuizPage = () => {
     );
   }
 
+  // Submitting state
+  if (submitting) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600">
+        <div className="text-white text-2xl">
+          Calculating your result... 🎉
+        </div>
+      </div>
+    );
+  }
+
   const currentQuestion = questions[currentIndex];
   const totalQuestions = questions.length;
-  const progress = ((currentIndex + 1) / totalQuestions) * 100; // Fixed: Proper progress calculation
+  const progress = ((currentIndex + 1) / totalQuestions) * 100;
 
   return (
     <div className="w-screen h-screen">
@@ -140,7 +196,7 @@ const QuizPage = () => {
               className="mt-4 h-4 w-96 bg-white/30 rounded-full overflow-hidden backdrop-blur-sm"
             >
               <div
-                className="h-full bg-gradient-to-r from-yellow-500 to-orange-600 transition-all duration-500 ease-out rounded-full"
+                className="h-full hover:scale-105 bg-gradient-to-r from-yellow-500 to-orange-600 transition-all duration-500 ease-out rounded-full"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -148,7 +204,7 @@ const QuizPage = () => {
           
           {/* Question counter */}
           <div className="flex justify-center mt-2">
-            <div className="text-white text-lg font-semibold">
+            <div className="text-black text-lg font-semibold">
               Question {currentIndex + 1} of {totalQuestions}
             </div>
           </div>
