@@ -1,0 +1,6 @@
+src/generated/
+**/*.wasm.js
+**/runtime/**
+**/wasm-engine-edge.js
+**/wasm.js
+

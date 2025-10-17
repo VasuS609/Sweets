@@ -1,20 +1,28 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactConfetti from "react-confetti";
-import { useWindowSize } from "react-use";
 
 const Confetti = () => {
-  const { width, height } = useWindowSize();
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  return (
-    <ReactConfetti
-      width={screen.width}
-      height={screen.height}
-      recycle={false}
-      numberOfPieces={750}
-      gravity={0.3}
-    />
-  );
+    useEffect(() => {
+        const update = () => setDimensions({ width: window.innerWidth, height: window.innerHeight });
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
+
+    if (!dimensions.width || !dimensions.height) return null;
+
+    return (
+        <ReactConfetti
+            width={dimensions.width}
+            height={dimensions.height}
+            recycle={false}
+            numberOfPieces={250}
+            gravity={0.3}
+        />
+    );
 };
 
 export default Confetti;

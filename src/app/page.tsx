@@ -1,121 +1,108 @@
-"use client";
+'use client';
 
-import React, { useEffect } from 'react';
-import { FaLinkedinIn } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-import { Exo_2 } from "next/font/google";
-import { useRouter } from 'next/navigation';
-import AOS from 'aos';
-
-const exo2 = Exo_2({ 
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], 
-  display: 'swap',
-})
+import Link from 'next/link';
+import { Github, Linkedin } from 'lucide-react';
 
 export default function Home() {
-  const router = useRouter()
-
-  useEffect(() => {
-    AOS.init({
-      duration: 700,
-      once: true,
-    });
-  }, []);
-
   return (
-    <div className={exo2.className}>
-      <div className='fixed inset-0 -z-10'> 
-        <img 
-          className='w-full h-full object-cover' 
-          src="/landingpageBg.jpeg" 
-          alt="Landing background" 
-        />
-        <div className='absolute inset-0 bg-black/30'></div>
+    <div className="min-h-screen  bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 relative overflow-hidden">
+      
+      {/* Decorative Elements - Top Corners */}
+      <div className="absolute top-4 left-4 md:top-8 md:left-8">
+        <div className="text-6xl md:text-8xl opacity-20">☀️</div>
+      </div>
+      <div className="absolute top-4 right-4 md:top-8 md:right-8">
+        <div className="text-6xl md:text-8xl opacity-20">☀️</div>
       </div>
 
-      <div className='relative z-10'> 
-        <div className='flex flex-col items-center justify-between min-h-screen w-full px-4 py-8'>
+      {/* Hanging Decorations */}
+      <div className="absolute top-0 left-16 md:left-32">
+        <div className="text-4xl md:text-6xl animate-bounce" style={{ animationDelay: '0s' }}>🪔</div>
+      </div>
+      <div className="absolute top-0 right-16 md:right-32">
+        <div className="text-4xl md:text-6xl animate-bounce" style={{ animationDelay: '0.5s' }}>🪔</div>
+      </div>
+
+      {/* Social Icons - Top Right */}
+      <div className="absolute top-8 right-8 flex justify-center gap-4 z-10">
+        <a 
+          href="https://linkedin.com" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-orange-200 transition-colors"
+        >
+          <Linkedin size={28} />
+        </a>
+        <a 
+          href="https://github.com" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:text-orange-200 transition-colors"
+        >
+          <Github size={28} />
+        </a>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4  flex flex-col items-center justify-center min-h-screen gap-10 ">
+        
+        {/* Main Heading */}
+      <h1
+  className="
+    text-4xl md:text-6xl font-bold text-center mb-8  text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-amber-500 bg-[length:200%_auto] transition-[background-position] duration-[2500ms] ease-in-out hover:bg-[position:-100%_0] drop-shadow-2xl ">
+  This Diwali, let&apos;s find which traditional sweet matches your personality perfectly!
+</h1>
+        {/* Feature Box */}
+        <div className="bg-white/20 hover:scale-105 transition-all ease-in-out  backdrop-blur-md rounded-3xl md:p-12 mb-12 sm:w-150 w-75  border border-white/30 hover:bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 hover:duration-600  hover:ease-in-out">
+          <h2 className="sm:text-3xl text-2xl font-semibold text-white w-full h-20  flex items-center justify-center hover:text-emerald-200">
+            Answer 7 fun questions and discover:
+          </h2>
           
-          {/* Top section - Social Icons */}
-          <div 
-            className='flex gap-8 text-2xl sm:text-4xl text-white'
-            data-aos="fade-down"
-          >
-            <a 
-              href="https://www.linkedin.com/in/vasu-sahu-s2ep7"
-              className='hover:text-blue-400  transition-colors'
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaLinkedinIn />
-            </a>   
-            <a 
-              href="https://github.com/VasuS609"
-              className=' transition-colors hover:text-black '
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaGithub />
-            </a>     
-          </div>
-
-          {/* Middle section - Main Content */}
-          <div className='flex flex-col items-center gap-6 max-w-4xl text-center text-white'>
-            <h1 
-              className='text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight hover:scale-105 transition-all ease-in-out duration-500'
-              data-aos="zoom-in"
-            >
-              🪔 This Diwali, let's find which traditional sweet matches your personality perfectly! 🍬
-            </h1>
-            
-            <div 
-              className='bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 hover:scale-105 transition-all duration-300'
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <p className='text-lg sm:text-xl mb-4 font-medium'>
-                Answer 15 fun questions and discover:
-              </p>
-              <ul className='text-left space-y-2 text-base sm:text-lg'>
-                <li data-aos="fade-right" data-aos-delay="300">✨ Your ideal festive sweet</li>
-                <li data-aos="fade-right" data-aos-delay="400">🎯 Why it matches your vibe</li>
-                <li data-aos="fade-right" data-aos-delay="500">📊 Nutrition facts to celebrate mindfully</li>
-                <li data-aos="fade-right" data-aos-delay="600">🎁 A personalized Diwali treat recommendation</li>
-              </ul>
-            </div>
-            
-            <h3 
-              className='text-xl sm:text-2xl font-medium'
-              data-aos="fade-up"
-              data-aos-delay="700"
-            >
-              May your Diwali be as sweet as your result! 🌟
-            </h3>
-
-            {/* CTA Button */}
-           
-            <button 
-              className='bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold text-lg sm:text-xl px-12 py-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 mt-4'
-              data-aos="zoom-in"
-              data-aos-delay="800"
-              onClick={()=>{
-                router.push("/quiz");             
-              }}
-            >
-              Let' Go 🎆
-            </button>
-          
-          </div>
-
-          {/* Bottom section */}
-          <div 
-            className='text-white text-md'
-          >
-            Made with 💝 for Diwali 2024
-          </div>
+          <ul className="space-y-4 text-white text-lg h-40 flex flex-col justify-center ">
+            <li className="flex items-start gap-3">
+              <span className="text-2xl">✨</span>
+              <span className="hover:text-emerald-200">Your ideal festive sweet</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-2xl">🎯</span>
+              <span  className="hover:text-emerald-200">Why it matches your vibe</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-2xl">📊</span>
+              <span  className="hover:text-emerald-200">Nutrition facts to celebrate mindfully</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-2xl">🎁</span>
+              <span  className="hover:text-emerald-200">A personalized Diwali treat recommendation</span>
+            </li>
+          </ul>
         </div>
+
+        {/* Tagline */}
+        <p className="text-xl md:text-2xl text-white font-medium mb-8 text-center drop-shadow">
+          May your Diwali be as sweet as your result! ✨
+        </p>
+
+        {/* CTA Button */}
+        <Link href="/quiz">
+          <button className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold text-xl rounded-full shadow-2xl transform hover:scale-105 transition-all duration-500 items-center gap-2 w-60 h-10  flex justify-center px-12">
+            Get Started 🪔
+          </button>
+        </Link>
+
+        {/* Footer */}
+        <p className="text-white/80 text-sm mt-12">
+          Made with ❤️ for Diwali 2025 by <a href="https://vashs-devor.vercel.app/" className='text-lg text-amber-50'>Vasu!!</a>
+        </p>
+      </div>
+
+      {/* Bottom Diya Decorations */}
+      <div className="absolute bottom-8 left-16 md:left-32">
+        <div className="text-6xl md:text-8xl opacity-30 animate-pulse">🪔</div>
+      </div>
+      <div className="absolute bottom-8 right-16 md:right-32">
+        <div className="text-6xl md:text-8xl opacity-30 animate-pulse">🪔</div>
       </div>
     </div>
-  )
+  );
 }

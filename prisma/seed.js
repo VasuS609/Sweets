@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../src/generated/prisma');
+import { PrismaClient } from'../src/generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -99,7 +99,7 @@ async function main() {
     }
   });
 
-  const kajuKatli = await prisma.sweet.create({
+  const KajuKatli = await prisma.sweet.create({
     data: {
       name: "Kaju Katli",
       emoji: "💎",

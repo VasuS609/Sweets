@@ -6,8 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "lint": "eslint . --ext .ts,.tsx --fix",
+    "lint:check": "eslint . --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,14 +22,17 @@
     "@next/font": "^14.2.15",
     "@prisma/client": "^6.17.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/recharts": "^1.8.29",
     "aos": "^2.3.4",
     "confetti": "^2.0.6",
+    "lucide-react": "^0.545.0",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-confetti": "^6.4.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
-    "react-use": "^17.6.0"
+    "react-use": "^17.6.0",
+    "recharts": "^3.2.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
