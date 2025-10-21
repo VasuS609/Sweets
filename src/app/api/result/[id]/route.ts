@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 // Cache results for 5 minutes
@@ -6,12 +6,26 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const cache = new Map<string, { data: unknown; timestamp: number }>();
 
 export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
+  request: Request,
+  context: any
 ) {
   try {
-    const { params } = await Promise.resolve(context);
-    const resultId = Number.parseInt(params.id);
+    
+    let idStr: string | undefined;
+    if (context && context.params && typeof context.params.id === 'string') {
+      idStr = context.params.id;
+    } else {
+      try {
+        const pathname = new URL(request.url).pathname;
+
+        const parts = pathname.split('/').filter(Boolean);
+        idStr = parts.length ? parts[parts.length - 1] : undefined;
+      } catch {
+        idStr = undefined;
+      }
+    }
+
+    const resultId = Number.parseInt(idStr ?? '');
 
     // Validate result ID
     if (isNaN(resultId) || resultId <= 0) {
