@@ -88,7 +88,7 @@ export default function SweetCard() {
       {/* Header */}
       <div className={bungeeSpice.className} data-aos="zoom-in">
         <div className="text-4xl sm:text-6xl text-white font-bold p-6 bg-black/30 rounded-lg flex justify-center text-center backdrop-blur-sm">
-          Here's Your Result! 🎉
+          Here&apos;s Your Result! 🎉
         </div>
       </div>
 

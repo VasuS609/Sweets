@@ -3,11 +3,11 @@ import { prisma } from '@/lib/prisma';
 
 // Cache results for 5 minutes
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const cache = new Map<string, { data: any; timestamp: number }>();
+const cache = new Map<string, { data: unknown; timestamp: number }>();
 
 export async function GET(
   request: NextRequest,
-  context: any
+  context: { params: { id: string } }
 ) {
   try {
     const { params } = await Promise.resolve(context);
