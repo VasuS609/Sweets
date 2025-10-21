@@ -12,7 +12,6 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate",
     "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
@@ -43,6 +42,7 @@
     "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "prisma": "^6.17.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
