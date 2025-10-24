@@ -213,7 +213,7 @@ const handleOptionSelect = (optionId: number) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 p-4 md:p-8 flex justify-center relative overflow-hidden">
-      {/* Floating decorative elements (hidden on small screens to reduce jank) */}
+    
       <div className="absolute inset-0 pointer-events-none opacity-30 hidden sm:block">
         <div className="absolute top-10 left-10 text-4xl animate-float">🪔</div>
         <div className="absolute top-40 right-20 text-3xl animate-float-delayed">✨</div>
