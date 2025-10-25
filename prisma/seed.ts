@@ -1,18 +1,15 @@
-// @ts-nocheck
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌟 Starting seed...');
 
-  // Clear existing data
   await prisma.quizResult.deleteMany();
   await prisma.option.deleteMany();
   await prisma.question.deleteMany();
   await prisma.sweet.deleteMany();
 
-  // Create Questions with Options - 7 questions with 4 tags per option
   const questions = [
     {
       text: "When the Diwali prep gets chaotic, how do you handle it?",
@@ -39,7 +36,7 @@ async function main() {
       order: 3,
       options: [
         { text: "Dive in — fireworks first, questions later! 🚀", emoji: "🚀", tags: ["bold", "adventurous", "confident"], order: 1 },
-        { text: "Research like I’m picking the perfect mithai box. 🔍", emoji: "🔍", tags: ["analytical", "careful", "intelligent"], order: 2 },
+        { text: "Research like I'm picking the perfect mithai box. 🔍", emoji: "🔍", tags: ["analytical", "careful", "intelligent"], order: 2 },
         { text: "Ask my family squad before jumping in. 👥", emoji: "👥", tags: ["social", "collaborative", "cautious"], order: 3 },
         { text: "Trust my gut — good vibes never lie. 🎯", emoji: "🎯", tags: ["intuitive", "self-aware", "wise"], order: 4 }
       ]
@@ -80,32 +77,24 @@ async function main() {
       options: [
         { text: "Crack jokes till they smile — instant mood lift! 💪", emoji: "💪", tags: ["inspiring", "bold", "confident"], order: 1 },
         { text: "Help out — fix lights or grab them some chai. 🔧", emoji: "🔧", tags: ["practical", "reliable", "logical"], order: 2 },
-        { text: "Listen with heart — sometimes that’s all we need. 🤝", emoji: "🤝", tags: ["empathetic", "caring", "supportive"], order: 3 },
+        { text: "Listen with heart — sometimes that's all we need. 🤝", emoji: "🤝", tags: ["empathetic", "caring", "supportive"], order: 3 },
         { text: "Remind them that light always wins over darkness. 🕊️", emoji: "🕊️", tags: ["wise", "spiritual", "thoughtful"], order: 4 }
       ]
     }
-  ]
-  
+  ];
 
   for (const q of questions) {
     const { options, ...questionData } = q;
-    const optionsWithRequiredFields = options.map((opt: any, idx: number) => ({
-      text: opt.text,
-      tags: opt.tags,
-      emoji: '✨',
-      order: idx + 1,
-    }));
     await prisma.question.create({
       data: {
         ...questionData,
         options: {
-          create: optionsWithRequiredFields,
+          create: options,
         }
       }
     });
   }
 
-  // Create Sweets with CORRECTED NUTRITION VALUES (per piece/100g serving)
   const sweets = [
     {
       name: "Gulab Jamun",
@@ -113,7 +102,7 @@ async function main() {
       description: "You're like Gulab Jamun — soft outside, softer inside. You bring comfort to everyone around you, and your presence makes gatherings sweeter and warmer.",
       tagline: "The Timeless Comfort",
       funFact: "Still the king of Indian desserts — no competition, only respect.",
-      imageUrl: "/sweets/gulab-jamun.jpg",
+      imageUrl: "/sweets/gulabjamun.png",
       tags: ["warm", "classic", "comforting", "homely"],
       calories: 194,
       protein: 2.1,
@@ -128,7 +117,7 @@ async function main() {
       description: "You're like Jalebi — a full-time entertainer with loops of chaos. You bring excitement, laughter, and unpredictable energy wherever you go.",
       tagline: "The Spirited Chaos",
       funFact: "Every spiral is unique — just like your life choices.",
-      imageUrl: "/sweets/jalebi.jpg",
+      imageUrl: "/sweets/jalebi.png",
       tags: ["fun", "bold", "vibrant", "chaotic"],
       calories: 223,
       protein: 1.5,
@@ -143,7 +132,7 @@ async function main() {
       description: "You're like Kaju Katli — sophisticated, elegant, and always noticed without trying. You carry yourself with grace and leave a lasting impression.",
       tagline: "The Elegant Soul",
       funFact: "Edible silver on top — your aura is equally premium.",
-      imageUrl: "/sweets/kaju-katli.jpg",
+      imageUrl: "/sweets/kajukatli.png",
       tags: ["elegant", "refined", "calm", "premium"],
       calories: 112,
       protein: 3.2,
@@ -158,7 +147,7 @@ async function main() {
       description: "You're like Rasgulla — soft, sweet, and emotionally gentle. You are the calm in the storm and make everyone feel at ease.",
       tagline: "The Gentle Spirit",
       funFact: "Bengal and Odisha fight over your origin — legends unite people.",
-      imageUrl: "/sweets/rasgulla.jpg",
+      imageUrl: "/sweets/rasagulla.png",
       tags: ["calm", "peaceful", "delicate", "patient"],
       calories: 101,
       protein: 2.4,
@@ -173,7 +162,7 @@ async function main() {
       description: "You're like Ladoo — full of joy, energy, and celebration. Wherever you go, people feel the festive vibe and can't help smiling.",
       tagline: "The Life of the Party",
       funFact: "Auspicious at every event — your energy is the blessing itself.",
-      imageUrl: "/sweets/ladoo.jpg",
+      imageUrl: "/sweets/ladoo.png",
       tags: ["joyful", "vibrant", "social", "playful"],
       calories: 170,
       protein: 4.8,
@@ -188,7 +177,7 @@ async function main() {
       description: "You're like Barfi — simple, dependable, and full of quiet strength. People trust you and feel grounded around your calm presence.",
       tagline: "The Dependable One",
       funFact: "'Barf' means snow — just like your pure and steady nature.",
-      imageUrl: "/sweets/barfi.jpg",
+      imageUrl: "/sweets/barfi.png",
       tags: ["simple", "traditional", "comforting", "reliable"],
       calories: 150,
       protein: 3.8,
@@ -203,7 +192,7 @@ async function main() {
       description: "You're like Mysore Pak — rich, bold, and unforgettable. You leave a mark wherever you go, unapologetically yourself and intense in everything you do.",
       tagline: "The Unforgettable Force",
       funFact: "Half ghee, half attitude — full-time legend.",
-      imageUrl: "/sweets/mysore-pak.jpg",
+      imageUrl: "/sweets/mysorpak.png",
       tags: ["bold", "intense", "luxurious", "ambitious"],
       calories: 280,
       protein: 2.5,
@@ -218,7 +207,7 @@ async function main() {
       description: "You're like Kheer — comforting, creamy, and nurturing. People feel safe around you, and your warmth leaves a lasting impression.",
       tagline: "The Nurturing Heart",
       funFact: "One of the world's oldest desserts — timeless comfort.",
-      imageUrl: "/sweets/kheer.jpg",
+      imageUrl: "/sweets/kheer.png",
       tags: ["comforting", "homely", "traditional", "nurturing"],
       calories: 192,
       protein: 5.2,
@@ -233,7 +222,7 @@ async function main() {
       description: "You're like Sandesh — artistic, delicate, and full of thoughtfulness. People admire your subtle charm and the care you put into everything.",
       tagline: "The Creative Visionary",
       funFact: "Molded into beautiful shapes — just like your soul.",
-      imageUrl: "/sweets/sandesh.jpg",
+      imageUrl: "/sweets/sandesh.png",
       tags: ["creative", "artistic", "delicate", "thoughtful"],
       calories: 114,
       protein: 4.5,
@@ -248,7 +237,7 @@ async function main() {
       description: "You're like Soan Papdi — flaky, layered, and fun. People may take time to understand you, but once they do, they're hooked on your charm.",
       tagline: "The Layered Mystery",
       funFact: "Over 1000 layers — complexity is your strength.",
-      imageUrl: "/sweets/soan-papdi.jpg",
+      imageUrl: "/sweets/soanpapdi.png",
       tags: ["unique", "fun", "complex", "playful"],
       calories: 185,
       protein: 3.0,
@@ -263,7 +252,7 @@ async function main() {
       description: "You're like Peda — dense, grounded, and deeply rooted in tradition. People rely on you for stability, values, and quiet guidance.",
       tagline: "The Grounded Soul",
       funFact: "Each region has its own Peda — staying true to roots, just like you.",
-      imageUrl: "/sweets/peda.jpg",
+      imageUrl: "/sweets/peda.png",
       tags: ["traditional", "strong", "spiritual", "wise"],
       calories: 206,
       protein: 4.0,
@@ -278,7 +267,7 @@ async function main() {
       description: "You're like Coconut Ladoo — fresh, light, and refreshingly real. You're approachable, modern, and effortlessly leave a good impression.",
       tagline: "The Refreshing Spirit",
       funFact: "Naturally gluten-free and quick to make — just like your effortless charm.",
-      imageUrl: "/sweets/coconut-ladoo.jpg",
+      imageUrl: "/sweets/coconutladoo.png",
       tags: ["modern", "refreshing", "simple", "cheerful"],
       calories: 156,
       protein: 2.3,
@@ -293,7 +282,7 @@ async function main() {
       description: "You're like Kalakand — crumbly, warm, and authentic. People trust you because you're real, pure, and never fake.",
       tagline: "The Authentically You",
       funFact: "Pure condensed milk magic — simple ingredients, extraordinary results.",
-      imageUrl: "/sweets/kalakand.jpg",
+      imageUrl: "/sweets/kalakand.png",
       tags: ["authentic", "warm", "genuine", "pure"],
       calories: 185,
       protein: 5.8,
@@ -308,7 +297,7 @@ async function main() {
       description: "You're like Mohanthal — nutty, aromatic, and complex. People need time to fully appreciate you, but your patience and thoughtfulness make it worth it.",
       tagline: "The Thoughtful Creator",
       funFact: "Hours of love and stirring — patience is your superpower.",
-      imageUrl: "/sweets/mohanthal.jpg",
+      imageUrl: "/sweets/mohanthal.png",
       tags: ["complex", "aromatic", "luxurious", "patient"],
       calories: 220,
       protein: 6.2,
@@ -323,7 +312,7 @@ async function main() {
       description: "You're like Gujiya — crispy outside, sweet inside, and full of surprises. You keep people guessing and make every festival more delightful.",
       tagline: "The Pleasant Surprise",
       funFact: "Official sweet of Holi, but perfect for Diwali too — versatility is your vibe.",
-      imageUrl: "/sweets/gujiya.jpg",
+      imageUrl: "/sweets/gujiya.png",
       tags: ["surprising", "layered", "traditional", "festive"],
       calories: 236,
       protein: 2.8,
