@@ -11,8 +11,10 @@
     "type-check": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -35,16 +37,17 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "postcss": "^8.5.6",
     "prisma": "^6.17.1",
-    "tailwindcss": "^4",
+    "tailwindcss": "^3.4.15",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5"
