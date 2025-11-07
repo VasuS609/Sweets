@@ -10,14 +10,15 @@ export async function GET(
   context: any
 ) {
   try {
+    // Await params before accessing properties
+    const params = await context.params;
     
     let idStr: string | undefined;
-    if (context && context.params && typeof context.params.id === 'string') {
-      idStr = context.params.id;
+    if (params && typeof params.id === 'string') {
+      idStr = params.id;
     } else {
       try {
         const pathname = new URL(request.url).pathname;
-
         const parts = pathname.split('/').filter(Boolean);
         idStr = parts.length ? parts[parts.length - 1] : undefined;
       } catch {
